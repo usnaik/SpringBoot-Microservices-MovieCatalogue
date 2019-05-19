@@ -27,18 +27,18 @@ public class MovieCatalogResource {
 		UserRating ratings = restTemplate.getForObject("http://localhost:8083/ratingsdata/users/" + userId, UserRating.class);
 		
 		// For each movie id, call movie info service to get the movie details 
-		return ratings.getUserRating()
-				.stream()
-				.map (rating -> {
-
-					// Option 1 - Synchronous call - returns object right away.
-					Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(),Movie.class);
-					
-					return new CatalogItem(movie.getName(), "Transformer - Test Description", rating.getRating());			
-				})
+		return ratings.getUserRating().stream()
+			.map (rating -> {
+				
+				// Option 1 - Synchronous call - returns object right away.
+				// Call movie info service to get the movie details 
+				Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(),Movie.class);
+				
+				// Put them all together
+				return new CatalogItem(movie.getName(), "Transformer - Test Description", rating.getRating());			
+			})
 				.collect(Collectors.toList());
 				
-		// Put them all together
 		
 	}
 	
