@@ -12,10 +12,11 @@
 	<artifactId>ratings-data-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ratings-data-service</name>
-	<description>Microservice 2 - Movie Catalogue project</description>
+	<description>Microservice 3 - Movie Catalogue project</description>
 
 	<properties>
 		<java.version>11</java.version>
+		<spring-cloud.version>Greenwich.SR1</spring-cloud.version>		
 	</properties>
 
 	<dependencies>
@@ -25,12 +26,29 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
 	<build>
 		<plugins>
 			<plugin>

@@ -17,14 +17,14 @@ import com.upen.moviecatalogservice.models.UserRating;
 @RequestMapping("/catalog")
 public class MovieCatalogResource {
 
-	@Autowired		// Option 1 Using Rest Template
+	@Autowired		// Option 1 - Using "Rest Template" Synchronous Calls
 	private RestTemplate restTemplate;
 		
 	@RequestMapping("/{userId}")
 	public List<CatalogItem> getCatalog(@PathVariable("userId") String userId){
 		
 		//Get all rated movie IDs
-		UserRating ratings = restTemplate.getForObject("http://localhost:8083/ratingsdata/users/" + userId, UserRating.class);
+		UserRating ratings = restTemplate.getForObject("http://ratings-data-service/ratingsdata/users/" + userId, UserRating.class);
 		
 		// For each movie id, call movie info service to get the movie details 
 		return ratings.getUserRating().stream()
@@ -32,7 +32,7 @@ public class MovieCatalogResource {
 				
 				// Option 1 - Synchronous call - returns object right away.
 				// Call movie info service to get the movie details 
-				Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(),Movie.class);
+				Movie movie = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(),Movie.class);
 				
 				// Put them all together
 				return new CatalogItem(movie.getName(), "Transformer - Test Description", rating.getRating());			
@@ -50,7 +50,7 @@ private WebClient.Builder webClientBuilder;
 */
 
 /*
-// Option 2 - Reactive Asynchronous call - return object at a later point
+// Option 2 - "Reactive Asynchronous" WebClient.Builder - return object at a later point
 Movie movie = webClientBuilder.build()
 	.get()
 	.uri("http://localhost:8082/movies/" + rating.getMovieId())
