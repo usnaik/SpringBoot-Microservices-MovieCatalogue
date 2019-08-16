@@ -24,10 +24,10 @@ public class MovieCatalogResource {
 	public List<CatalogItem> getCatalog(@PathVariable("userId") String userId){
 		
 		//Get all rated movie IDs
-		UserRating ratings = restTemplate.getForObject("http://ratings-data-service/ratingsdata/users/" + userId, UserRating.class);
+		UserRating ratings = restTemplate.getForObject("http://ratings-data-service/ratingsdata/user/" + userId, UserRating.class);
 		
 		// For each movie id, call movie info service to get the movie details 
-		return ratings.getUserRating().stream()
+		return ratings.getRatings().stream()
 			.map (rating -> {
 				
 				// Option 1 - Synchronous call - returns object right away.
@@ -35,7 +35,7 @@ public class MovieCatalogResource {
 				Movie movie = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(),Movie.class);
 				
 				// Put them all together
-				return new CatalogItem(movie.getName(), "Transformer - Test Description", rating.getRating());			
+				return new CatalogItem(movie.getName(), movie.getDescription(), rating.getRating());			
 			})
 				.collect(Collectors.toList());
 				
