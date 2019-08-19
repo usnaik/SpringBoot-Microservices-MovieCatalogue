@@ -1,6 +1,7 @@
 package com.upen.moviecatalogservice.models;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class UserRating {
@@ -31,4 +32,6 @@ public class UserRating {
                 new Rating("200", 4)
         ));
     }
+
+
 }
